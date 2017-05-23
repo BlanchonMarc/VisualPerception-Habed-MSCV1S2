@@ -17,11 +17,9 @@ disp(A);
 
 %%Mendoca Cipolla
 
-options = optimset('Algorithm','levenberg-marquardt'); %Optimizing option used in the case of non linear function and / or multiple variables 
-%This is correlated with Gauss-Newton optimization and Gradient.
-
-
-int_params_lin = lsqnonlin('cost_function_MC',A,[],[],options); %Solve non linear least square
+options = optimset('Algorithm','levenberg-marquardt'); %Optimizinf option used in the case of non linear function and / or multiple variables 
+%
+int_params_lin = lsqnonlin('cost_function_MC',A,[],[],options);
 
 
 fprintf('Intrinsic parameters directly from optimized: ');
