@@ -19,38 +19,22 @@ fprintf('Display the Intrincic Parameters : \n');
 disp(A);
 
 %% Mendoca Cipolla
+fprintf('MENDOCA CIPOLLA -----------------------------------------------------')
 
 
 %Optimization optimset used in the case of non linear function and / or multiple variables 
 %This is correlated with Gauss-Newton optimization and Gradient.
-int_params_lin = lsqnonlin('cost_function_MC',A,[],[],optimset('Algorithm','levenberg-marquardt')); %Solve non linear least square
+Al = [A(1,1) A(1,3) A(2,2) A(2,3)]
 
+int_params_lin = lsqnonlin('cost_function_MC',Al,[],[],optimset('Algorithm','levenberg-marquardt')); %Solve non linear least square
 
-fprintf('Intrinsic parameters directly from optimized: ');
-disp(int_params_lin);
-
-int_params_final= [int_params_lin(1,1) 0 int_params_lin(1,3);
-                    0 int_params_lin(2,2) int_params_lin(2,3);
-                    0 0 1];
-
-fprintf('Intrinsic parameters formated: ');
-disp(int_params_final);
+int_params_lin
 
 %% Kruppa
 
 fprintf('KRUPPA --------------------------------------------------------------')
 
-w= A*A';
-
-int_params_lin = lsqnonlin('cost_function_Kruppa',w,[],[],optimset('Algorithm','levenberg-marquardt')); %Solve non linear least square
-
-
-fprintf('Intrinsic parameters directly from optimized: ');
-disp(int_params_lin);
-
-int_params_final= [int_params_lin(1,1) 0 int_params_lin(1,3);
-                    0 int_params_lin(2,2) int_params_lin(2,3);
-                    0 0 1];
-
-fprintf('Intrinsic parameters formated: ');
-disp(int_params_final);
+init_params = [A(1,1) A(2,2) A(1,2) A(1,3) A(2,3)];
+options = optimset('TolFun' , 1e-32 , 'TolX' , 1e-32 );
+[cost] = lsqnonlin(@(parameters)cost_function_Kruppa(Fs , parameters),init_params,[],[],options);
+cost
